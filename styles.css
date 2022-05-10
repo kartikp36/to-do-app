@@ -16,3 +16,10 @@ p {
   height: 2em;
   width: 6em;
 }
+
+ul {
+  list-style-type:none;
+}
+li{
+  font-size: x-large;
+}
