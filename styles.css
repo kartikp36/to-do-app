@@ -1,0 +1,18 @@
+body {
+  background-color: powderblue;
+  text-align: center;
+}
+h1 {
+  color: teal;
+  margin: 64px;
+}
+p {
+  color: black;
+}
+#input-text {
+  font-size: x-large;
+}
+#submit-btn{
+  height: 2em;
+  width: 6em;
+}
