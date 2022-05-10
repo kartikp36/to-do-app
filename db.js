@@ -6,19 +6,23 @@ dbReq.onupgradeneeded = function (event) {
 };
 dbReq.onsuccess = function (event) {
   db = event.target.result;
+  let task = document.getElementById("input-text");
   getAndDisplayTodos(db);
 };
 dbReq.onerror = function (event) {
   alert("Error while opening database " + event.target.errorCode);
 };
 
-function addTodo(db, message) {
+function addTodo(db, task) {
   let transaction = db.transaction(["todos"], "readwrite");
   let objectStore = transaction.objectStore("todos");
 
-  let todo = { text: message, check: false, timestamp: Date.now() };
+  let todo = { text: task, check: false, timestamp: Date.now() };
   objectStore.add(todo);
 
+  objectStore.onsuccess = function () {
+    console.log(objectStore.result);
+  };
   transaction.oncomplete = function () {
     console.log("objectStored your new todo task!");
     getAndDisplayTodos(db);
@@ -29,13 +33,17 @@ function addTodo(db, message) {
 }
 
 function submitTodo() {
-  let message = document.getElementById("input-text");
-  addTodo(db, message.value);
-  message.value = "";
+  let task = document.getElementById("input-text");
+  if (!task.value) {
+    console.error("Please enter a task");
+  } else {
+    addTodo(db, task.value);
+    task.value = "";
+  }
 }
 
 function getAndDisplayTodos(db) {
-  let transaction = db.transaction(["todos"], "readonly");
+  let transaction = db.transaction(["todos"], "readwrite");
   let objectStore = transaction.objectStore("todos");
 
   let req = objectStore.openCursor();
@@ -44,7 +52,10 @@ function getAndDisplayTodos(db) {
   req.onsuccess = function (event) {
     let cursor = event.target.result;
     if (cursor != null) {
-      allTodos.push({...cursor.value , key : cursor.key});
+      let todo = !cursor.value.key
+        ? { ...cursor.value, key: cursor.key }
+        : cursor.value;
+      allTodos.push(todo);
       cursor.continue();
     } else {
       displayTodos(allTodos);
@@ -55,7 +66,7 @@ function getAndDisplayTodos(db) {
   };
 }
 function toggleTodo(db, id) {
-  let checked = document.getElementById(id);
+  let checked = document.getElementById(id).checked;
   let transaction = db.transaction(["todos"], "readwrite");
   let objectStore = transaction.objectStore("todos");
 
@@ -67,13 +78,13 @@ function toggleTodo(db, id) {
       const updateReq = objectStore.put(todo, id);
       console.log(
         "The transaction that originated this request is " +
-        updateReq.transaction
+          updateReq.transaction
       );
       updateReq.onsuccess = () => {
-        displayTodos();
+        console.log("Todo toggled");
       };
     } else {
-      console.log("Todo not found");
+      console.error("Todo not found");
     }
   };
   req.onerror = function (event) {
@@ -87,8 +98,11 @@ function displayTodos(todos) {
     let todo = todos[i];
     listHTML +=
       "<li>" +
-      `<input onchange="toggleTodo(db, ${todo.key})" type="checkbox" id=${todo.key} name=${todo.key} value=${todo.text
-      } ${todo.check ? `checked="true"` : null}>` +
+      `<input onchange="toggleTodo(db, ${todo.key})" type="checkbox" id=${
+        todo.key
+      } name=${todo.key} value=${todo.text} ${
+        todo.check ? `checked="true"` : null
+      }>` +
       todo.text +
       " " +
       new Date(todo.timestamp).toLocaleString() +

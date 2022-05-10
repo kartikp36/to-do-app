@@ -13,10 +13,13 @@ p {
   font-size: x-large;
 }
 #submit-btn{
-  height: 2em;
-  width: 6em;
+  font-size: large;
+  height: 100%;
+  width: auto;
 }
-
+#input-todo{
+  vertical-align: middle;
+}
 ul {
   list-style-type:none;
 }
