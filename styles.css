@@ -12,18 +12,24 @@ p {
 #input-text {
   font-size: x-large;
 }
-#submit-btn{
+#submit-btn {
   font-size: large;
   height: 100%;
   width: auto;
 }
-#input-todo{
+#load-btn {
+  font-size: large;
+  height: 100%;
+  width: auto;
+}
+#input-todo {
   vertical-align: middle;
 }
 ul {
-  list-style-type:none;
+  list-style-type: none;
 }
-li{
+li {
   font-size: x-large;
   margin: 4px;
+  margin-bottom: 62px; /*32 */
 }
