@@ -10,7 +10,7 @@
 <body>
   <script src="db.js"></script>
   <h1>ToDo app</h1>
-  <form onsubmit="submitTodo()">
+  <form onsubmit="submitTodo();return false;">
     <div id="input-todo" class="input-todo">
   <input type="text" id="input-text" name="input-text" size="32"></input>
   <input type="submit" id="submit-btn" name="submit-btn">

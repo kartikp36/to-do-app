@@ -6,17 +6,23 @@ dbReq.onupgradeneeded = function (event) {
 };
 dbReq.onsuccess = function (event) {
   db = event.target.result;
-  let task = document.getElementById("input-text");
   getAndDisplayTodos(db);
 };
 dbReq.onerror = function (event) {
   alert("Error while opening database " + event.target.errorCode);
 };
 
+function encodeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function addTodo(db, task) {
   let transaction = db.transaction(["todos"], "readwrite");
   let objectStore = transaction.objectStore("todos");
-
   let todo = { text: task, check: false, timestamp: Date.now() };
   objectStore.add(todo);
 
@@ -34,10 +40,11 @@ function addTodo(db, task) {
 
 function submitTodo() {
   let task = document.getElementById("input-text");
+  let text = encodeHtml(task.value);
   if (!task.value) {
     console.error("Please enter a task");
   } else {
-    addTodo(db, task.value);
+    addTodo(db, text);
     task.value = "";
   }
 }
@@ -58,6 +65,12 @@ function getAndDisplayTodos(db) {
       allTodos.push(todo);
       cursor.continue();
     } else {
+      allTodos.sort(function (a, b) {
+        return new Date(b.timestamp) - new Date(a.timestamp);
+      });
+      allTodos.sort(function (a, b) {
+        return b.check - a.check;
+      });
       displayTodos(allTodos);
     }
   };
@@ -100,12 +113,13 @@ function displayTodos(todos) {
       "<li>" +
       `<input onchange="toggleTodo(db, ${todo.key})" type="checkbox" id=${
         todo.key
-      } name=${todo.key} value=${todo.text} ${
+      } name=${todo.key} value=${String(todo.text)} ${
         todo.check ? `checked="true"` : null
       }>` +
-      todo.text +
+      `${todo.text}` +
       " " +
       new Date(todo.timestamp).toLocaleString() +
+      `</input>` +
       "</li>";
   }
   document.getElementById("todos").innerHTML = listHTML;
