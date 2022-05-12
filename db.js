@@ -14,13 +14,13 @@ dbReq.onerror = function (event) {
   alert("Error while opening database " + event.target.errorCode);
 };
 
-function encodeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+// function encodeHtml(str) {
+//   return String(str)
+//     .replace(/&/g, "&amp;")
+//     .replace(/</g, "&lt;")
+//     .replace(/>/g, "&gt;")
+//     .replace(/"/g, "&quot;");
+// }
 
 function addTodo(db, task) {
   let transaction = db.transaction(["todos"], "readwrite");
@@ -42,11 +42,10 @@ function addTodo(db, task) {
 
 function submitTodo() {
   let task = document.getElementById("input-text");
-  let text = encodeHtml(task.value);
   if (!task.value) {
     console.error("Please enter a task");
   } else {
-    addTodo(db, text);
+    addTodo(db, `${task.value}`);
     task.value = "";
   }
 }
@@ -71,7 +70,7 @@ function getAndDisplayTodos(db, level) {
         return new Date(b.timestamp) - new Date(a.timestamp);
       });
       allTodos.sort(function (a, b) {
-        return b.check - a.check;
+        return a.check - b.check;
       });
       pages = allTodos.length;
       displayTodos(allTodos, level);
@@ -82,7 +81,8 @@ function getAndDisplayTodos(db, level) {
   };
 }
 
-function toggleTodo(db, id) {
+function toggleTodo() {
+  let id = parseInt(this.id);
   let checked = document.getElementById(id).checked;
   let transaction = db.transaction(["todos"], "readwrite");
   let objectStore = transaction.objectStore("todos");
@@ -110,29 +110,31 @@ function toggleTodo(db, id) {
 }
 
 function displayTodos(todos) {
-  let listHTML = "<ul>";
+  const ul = document.createElement("ul");
+
   var counter = 1;
   for (const i in todos) {
     if (counter <= 10 * level) {
       todo = todos[i];
-      listHTML +=
-        "<li>" +
-        `<input onchange="toggleTodo(db, ${todo.key})" type="checkbox" id=${
-          todo.key
-        } name=${todo.key} value=${String(todo.text)} ${
-          todo.check ? `checked="true"` : null
-        }>` +
-        `${todo.text}` +
-        " " +
-        new Date(todo.timestamp).toLocaleString() +
-        `</input>` +
-        "</li>";
-    } else {
-      last = i;
+      const li = document.createElement("li");
+      const input = document.createElement("input");
+      input.onchange = toggleTodo;
+      input.type = "checkbox";
+      input.id = todo.key;
+      input.className = todo.text;
+      input.value = todo.text;
+      todo.check ? (input.checked = "true") : null;
+      const ele = document.createElement("span");
+      ele.innerText =
+        `${todo.text}` + new Date(todo.timestamp).toLocaleString();
+      li.appendChild(input);
+      li.appendChild(ele);
+      ul.appendChild(li);
     }
     counter++;
   }
-  document.getElementById("todos").innerHTML = listHTML;
+  document.getElementById("todos").innerHTML = "";
+  document.getElementById("todos").appendChild(ul);
 }
 
 function loadMoreButton() {
@@ -174,7 +176,7 @@ function loadOnScroll() {
   transaction.oncomplete = function () {
     console.log("New todos loaded");
     level++;
-    console.log(level);
+    console.log("Level:", level);
     getAndDisplayTodos(db, level);
   };
   transaction.onerror = function (event) {
