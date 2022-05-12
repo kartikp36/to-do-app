@@ -14,12 +14,12 @@ p {
 }
 #submit-btn {
   font-size: large;
-  height: 100%;
+  height: 32px;
   width: auto;
 }
 #load-btn {
   font-size: large;
-  height: 100%;
+  height: 32px;
   width: auto;
 }
 #input-todo {
