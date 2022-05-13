@@ -1,5 +1,5 @@
 body {
-  height: 100vh;
+  height: max-content;
   text-align: center;
   background: linear-gradient(56deg, #4158d0, #c850c0, #ffcc70);
   background-size: 600% 600%;
@@ -172,6 +172,10 @@ li {
   transition: all 0.275s;
 }
 
+[type="checkbox"]:checked + .label{
+  text-decoration: line-through;
+
+}
 /* checked mark aspect */
 [type="checkbox"]:not(:checked) + label:after,
 [type="checkbox"]:checked + label:after {

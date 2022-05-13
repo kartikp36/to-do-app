@@ -127,6 +127,7 @@ function displayTodos(todos) {
       todo.check ? (input.checked = "true") : null;
       var label = document.createElement("label");
       label.htmlFor = todo.key;
+      label.className = "label";
       label.innerText =
         todo.text +
         "    " + 
