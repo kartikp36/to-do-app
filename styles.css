@@ -1,5 +1,6 @@
 body {
   height: max-content;
+  min-height: 100vh;
   text-align: center;
   background: linear-gradient(56deg, #4158d0, #c850c0, #ffcc70);
   background-size: 600% 600%;
