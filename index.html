@@ -1,21 +1,60 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://validator.w3.org/nu/TR/html4/strict.dtd">
 <html lang="en">
-<head>
-  <link rel="stylesheet" href="styles.css">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo app</title>
-</head>
-<body>
-  <script src="db.js"></script>
-  <h1>ToDo app</h1>
-  <form onsubmit="submitTodo();return false;">
-    <div id="input-todo" class="input-todo">
-  <input type="text" id="input-text" name="input-text" size="32"></input>
-  <input type="submit" id="submit-btn" name="submit-btn">
-</div><div id="todos"></div>
-</form>
-<div id="loadmore"></div>
-</body>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu&family=Work+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <!--[if IE
+      ]><meta http-equiv="X-UA-Compatible" content="IE=10"
+    /><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="Todo app"
+      content="To do app for noting tasks you've got to do!"
+    />
+    <meta itemprop="name" content="Todo" />
+    <meta
+      itemprop="description"
+      content="To do app for noting tasks you've got to do!"
+    />
+
+    <title>Todo app</title>
+  </head>
+  <body>
+    <div id="container">
+      <script src="db.js"></script>
+      <h1 class="heading">
+        Here's what you've got,<br />
+        to do!
+      </h1>
+      <form onsubmit="submitTodo();return false;">
+        <div id="input-form" class="input-form">
+          <div class="input-todo">
+            <input
+              class="border-effect"
+              type="text"
+              id="input-text"
+              name="input-text"
+              placeholder="Add new task to do"
+            />
+            <span class="focus-border"></span>
+          </div>
+          <input
+            type="submit"
+            class="submit-btn"
+            id="submit-bn"
+            name="submit-btn"
+            value="Add task"
+          />
+        </div>
+        <div id="todos"></div>
+      </form>
+      <div id="loadmore"></div>
+    </div>
+  </body>
 </html>

@@ -123,12 +123,18 @@ function displayTodos(todos) {
       input.id = todo.key;
       input.className = todo.text;
       input.value = todo.text;
+      input.label = todo.text;
       todo.check ? (input.checked = "true") : null;
-      const ele = document.createElement("span");
-      ele.innerText =
-        `${todo.text}` + new Date(todo.timestamp).toLocaleString();
+      var label = document.createElement("label");
+      label.htmlFor = todo.key;
+      label.innerText =
+        todo.text +
+        "    " + 
+        " (" +
+        new Date(todo.timestamp).toLocaleString() +
+        ")";
       li.appendChild(input);
-      li.appendChild(ele);
+      li.appendChild(label);
       ul.appendChild(li);
     }
     counter++;
@@ -151,9 +157,13 @@ function loadMore() {
   document.getElementById("loadmore").innerHTML = "";
 }
 
-window.addEventListener("scroll", () => {
-  const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-  if (scrollTop + clientHeight > scrollHeight - 1) {
+window.onscroll = function (ev) {
+  const difference = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollposition = document.documentElement.scrollTop;
+  if (difference - scrollposition <= 0) {
+
+  // console.log(window.innerHeight, window.pageYOffset, document.body.offsetHeight)
+  // if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
     if (level >= pages / 10) {
       console.log("That's all the todos");
       return;
@@ -165,7 +175,7 @@ window.addEventListener("scroll", () => {
     }
     console.log("End reached");
   }
-});
+};
 
 function loadOnScroll() {
   let transaction = db.transaction(["todos"], "readwrite");
