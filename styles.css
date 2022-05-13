@@ -250,7 +250,7 @@ input[type="text"]::placeholder {
   /* border-bottom: 1px solid #ccc; */
 }
 
-.border-effect ~ . -border {
+.border-effect ~ .focus-border {
   position: absolute;
   bottom: 0;
   left: 50%;
