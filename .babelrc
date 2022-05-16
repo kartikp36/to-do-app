@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": "58",
+          "ie": "10"
+        }
+      }
+    ],
+    "stage-0"
+  ]
+}

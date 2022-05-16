@@ -40,7 +40,7 @@ function addTodo(db, task) {
   };
 }
 
-function submitTodo() {
+window.submitTodo = function submitTodo() {
   let task = document.getElementById("input-text");
   if (!task.value) {
     console.error("Please enter a task");
@@ -48,7 +48,7 @@ function submitTodo() {
     addTodo(db, `${task.value}`);
     task.value = "";
   }
-}
+};
 
 function getAndDisplayTodos(db, level) {
   let transaction = db.transaction(["todos"], "readwrite");
@@ -115,7 +115,7 @@ function displayTodos(todos) {
   var counter = 1;
   for (const i in todos) {
     if (counter <= 10 * level) {
-      todo = todos[i];
+      let todo = todos[i];
       const li = document.createElement("li");
       const input = document.createElement("input");
       input.onchange = toggleTodo;
@@ -130,7 +130,7 @@ function displayTodos(todos) {
       label.className = "label";
       label.innerText =
         todo.text +
-        "    " + 
+        "    " +
         " (" +
         new Date(todo.timestamp).toLocaleString() +
         ")";
@@ -144,6 +144,12 @@ function displayTodos(todos) {
   document.getElementById("todos").appendChild(ul);
 }
 
+window.loadMore = function loadMore() {
+  level++;
+  loadOnScroll();
+  document.getElementById("loadmore").innerHTML = "";
+};
+
 function loadMoreButton() {
   let listHTML =
     `<button id="load-btn" class="load-btn" onclick="loadMore()">` +
@@ -152,19 +158,12 @@ function loadMoreButton() {
   document.getElementById("loadmore").innerHTML = listHTML;
 }
 
-function loadMore() {
-  level++;
-  loadOnScroll();
-  document.getElementById("loadmore").innerHTML = "";
-}
-
 window.onscroll = function (ev) {
   const difference = document.documentElement.scrollHeight - window.innerHeight;
   const scrollposition = document.documentElement.scrollTop;
   if (difference - scrollposition <= 0) {
-
-  // console.log(window.innerHeight, window.pageYOffset, document.body.offsetHeight)
-  // if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+    // console.log(window.innerHeight, window.pageYOffset, document.body.offsetHeight)
+    // if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
     if (level >= pages / 10) {
       console.log("That's all the todos");
       return;

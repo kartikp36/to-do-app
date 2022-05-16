@@ -1,0 +1,29 @@
+{
+  "name": "to-do-app",
+  "version": "1.0.0",
+  "description": "To do website application for noting tasks you've got to do!",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kartikp36/to-do-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kartikp36/to-do-app/issues"
+  },
+  "homepage": "https://github.com/kartikp36/to-do-app#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
